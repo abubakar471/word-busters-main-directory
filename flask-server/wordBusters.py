@@ -1,14 +1,17 @@
 import random
 import json
 
-def hell():
-    secret_word = "damn!"
-    return secret_word
+# def hell(secret_word, display_word):
+#     secret_word = "damn!";
+#     display_word = ['mango', 'juice', 'cat'];
+#     return secret_word, display_word;
 
-# def makeGuess(guess, retryChance):
+def makeGuess(guess, retryChance):
+    global secret_word, display_word, empty_string, win_status;
+    
     words = ["max", "buggati", "trex", "angular", "viral"]
-    secret_word = ''
-    display_word = ''
+    secret_word = '';
+    display_word = [];
     empty_string = ""
     win_status = False
     retry_chance = 0
