@@ -1,0 +1,54 @@
+import express from "express";
+const router = express.Router();
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
+
+router.post("/game-start", async (req, res) => {
+  const response = await fetch("http://127.0.0.1:5000/game-start", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  const data = await response.json();
+  console.log(data);
+  const game_status = data.game_status.on;
+  const win_status = data.win_status.on;
+  const { secret_word, display_word, retryChance } = data;
+
+  return res.json({
+    game_status,
+    win_status,
+    secret_word,
+    display_word,
+    retryChance
+  });
+});
+
+router.post("/make-guess", async (req, res) => {
+  const { secretWord, displayWord, guess, retryChance, winStatus } = req.body;
+
+  if (!guess) {
+    return res.status(403).json({
+      success: false,
+      error: "You must guess a word",
+    });
+  }
+
+  const response = await fetch("http://127.0.0.1:5000/make-guess", {
+    method: "POST",
+    body: JSON.stringify({
+      secretWord: secretWord,
+      displayWord: displayWord,
+      guess: guess,
+      retryChance: retryChance,
+      winStatus : winStatus,
+    }),
+    headers: { "Content-Type": "application/json" },
+  });
+
+  const data = await response.json();
+  console.log(data);
+  return res.json(data);
+});
+
+export default router;
