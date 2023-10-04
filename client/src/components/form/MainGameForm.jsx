@@ -28,7 +28,7 @@ const MainGameForm = () => {
         guess,
         retryChance,
         winStatus,
-        gameStart,
+        gameStart
       });
       console.log(data);
 
