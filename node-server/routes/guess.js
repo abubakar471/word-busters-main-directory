@@ -13,19 +13,22 @@ router.post("/game-start", async (req, res) => {
   console.log(data);
   const game_status = data.game_status.on;
   const win_status = data.win_status.on;
+  const game_over = data.game_over.on;
   const { secret_word, display_word, retryChance } = data;
 
   return res.json({
     game_status,
+    game_over,
     win_status,
     secret_word,
     display_word,
-    retryChance
+    retryChance,
   });
 });
 
 router.post("/make-guess", async (req, res) => {
-  const { secretWord, displayWord, guess, retryChance, winStatus } = req.body;
+  const { secretWord, displayWord, guess, retryChance, winStatus, gameStart } =
+    req.body;
 
   if (!guess) {
     return res.status(403).json({
@@ -41,7 +44,8 @@ router.post("/make-guess", async (req, res) => {
       displayWord: displayWord,
       guess: guess,
       retryChance: retryChance,
-      winStatus : winStatus,
+      winStatus: winStatus,
+      game_status: gameStart,
     }),
     headers: { "Content-Type": "application/json" },
   });
