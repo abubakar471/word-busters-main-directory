@@ -37,7 +37,7 @@ router.post("/make-guess", async (req, res) => {
     });
   }
 
-  const response = await fetch("http://127.0.0.1:5000/make-guess", {
+  const response = await fetch("http://abdevs4371.pythonanywhere.com/make-guess", {
     method: "POST",
     body: JSON.stringify({
       secretWord: secretWord,
