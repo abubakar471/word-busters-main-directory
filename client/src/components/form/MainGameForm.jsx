@@ -130,7 +130,7 @@ const MainGameForm = () => {
           )}
 
           {/* game contents */}
-          {gameStart && !gameOver && (
+          {gameStart && !gameOver && !gameLoader && (
             <div>
               <div className="flex flex-col items-center justify-center w-full">
                 <p
@@ -181,7 +181,7 @@ const MainGameForm = () => {
             </div>
           )}
 
-          {gameOver && (
+          {gameOver && !gameLoader && (
             <div className="flex items-start justify-center w-full mt-12">
               <h1 className="text-3xl text-red-500">😩😞 Game Over 😞😩</h1>
             </div>
