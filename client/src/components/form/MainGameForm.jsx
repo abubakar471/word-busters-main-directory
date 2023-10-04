@@ -243,7 +243,7 @@ const MainGameForm = () => {
                   : "border-green-500 text-green-500 border-[0.02rem]"
               }`}
             >
-              Submit
+              {loading ? "Guessing..." : "Submit"}
             </button>
           )}
 
