@@ -28,7 +28,7 @@ const MainGameForm = () => {
         guess,
         retryChance,
         winStatus,
-        gameStart
+        gameStart,
       });
       console.log(data);
 
@@ -38,7 +38,7 @@ const MainGameForm = () => {
         setWinStatus(data.win_status);
         setGameLoader(false);
         setSecretWord(data.secret_word);
-        setGameStart(data.game_status.on)
+        setGameStart(data.game_status.on);
         setGameOver(data?.game_over?.on || false);
 
         window.localStorage.setItem(
@@ -49,7 +49,7 @@ const MainGameForm = () => {
             displayWord: data.new_display_word,
             retryChance: Number(data.retry_chance) || 5,
             winStatus: data.win_status || false,
-            gameOver: data?.game_over?.on || false
+            gameOver: data?.game_over?.on || false,
           })
         );
 
@@ -76,7 +76,7 @@ const MainGameForm = () => {
       setRetryChance(data.retryChance);
       setGameLoader(false);
       setGameOver(data.game_over || false);
-
+      setWinStatus(false);
       window.localStorage.setItem(
         "game",
         JSON.stringify({
@@ -117,8 +117,12 @@ const MainGameForm = () => {
   return (
     <>
       <form
+        style={{
+          background: "white",
+          boxShadow: "0 .125px 2px rgba(0,0,0,0.6)",
+        }}
         onSubmit={handleSubmit}
-        className="w-[80%] md:w-[50%] h-[400px] mx-auto bg-white rounded-md p-4 flex flex-col"
+        className="w-[90%] md:w-[50%] h-[400px] mx-auto bg-white rounded-md p-4 flex flex-col"
       >
         <div className="flex-grow">
           {(gameLoader || loading) && (
@@ -130,8 +134,8 @@ const MainGameForm = () => {
           )}
 
           {/* game contents */}
-          {gameStart && !gameOver && !gameLoader && (
-            <div>
+          {gameStart && !gameOver && !gameLoader && !loading && !winStatus && (
+            <div className={`${gameLoader ? "hidden" : "block"}`}>
               <div className="flex flex-col items-center justify-center w-full">
                 <p
                   className="text-3xl text-center"
@@ -168,9 +172,11 @@ const MainGameForm = () => {
                     <h1>Retry Chance</h1>
                     <h2 className="text-center">
                       {retryChance < 5 ? (
-                        <div className="text-green-500">{retryChance}</div>
-                      ) : (
                         <div className="text-red-500 text-center">
+                          {retryChance}
+                        </div>
+                      ) : (
+                        <div className="text-green-500 text-center">
                           {retryChance}
                         </div>
                       )}
@@ -181,31 +187,51 @@ const MainGameForm = () => {
             </div>
           )}
 
-          {gameOver && !gameLoader && (
-            <div className="flex items-start justify-center w-full mt-12">
-              <h1 className="text-3xl text-red-500">😩😞 Game Over 😞😩</h1>
+          {/* game over message */}
+          {gameOver && !gameLoader && !loading && (
+            <div
+              className={`${
+                gameLoader
+                  ? "hidden"
+                  : "flex items-start justify-center w-full mt-12"
+              }`}
+            >
+              <h1 className="text-lg lg:text-3xl xl:text-3xl font-semibold text-red-500">
+                😩😞 Game Over 😞😩
+              </h1>
+            </div>
+          )}
+
+          {/* congratulation message */}
+          {winStatus && !gameLoader && (
+            <div className="w-full h-full flex items-center justify-center">
+              <h1 className="text-sm lg:text-xl xl:text-xl font-semibold text-green-500 text-center">
+                🎉✨ Congratulations! You Have Won The Game ✨🎉
+              </h1>
             </div>
           )}
         </div>
 
         <div className="flex flex-col gap-y-2">
-          <TextField
-            type="text"
-            name="guess"
-            className="w-full"
-            variant="standard"
-            label="Guess the word"
-            disabled={loading || !gameStart || winStatus}
-            value={guess}
-            autoFocus={true}
-            onChange={(e) => setGuess(e.target.value)}
-            inputProps={{
-              autoComplete: "guess",
-            }}
-          />
+          {((winStatus && gameOver) || (!winStatus && !gameOver)) && (
+            <TextField
+              type="text"
+              name="guess"
+              className="w-full"
+              variant="standard"
+              label="Guess the word"
+              disabled={loading || !gameStart || winStatus}
+              value={guess}
+              autoFocus={true}
+              onChange={(e) => setGuess(e.target.value)}
+              inputProps={{
+                autoComplete: "guess",
+              }}
+            />
+          )}
 
           {/* submit button */}
-          {gameStart && !gameOver && (
+          {gameStart && !gameOver && !winStatus && (
             <button
               disabled={gameLoader || winStatus}
               onClick={handleSubmit}
@@ -222,22 +248,30 @@ const MainGameForm = () => {
           )}
 
           {/* start button */}
-          {!gameStart && (
+          {(!gameStart || winStatus) && (
             <button
-              disabled={gameLoader || winStatus}
+              disabled={gameLoader}
               onClick={handleStartClick}
               className={`w-full p-2 rounded-md transition-all duration-300 ease-in-out ${
                 gameStart
                   ? "bg-green-600 text-white border-[0.02rem]"
                   : gameLoader
                   ? "bg-green-600 text-white animate-bounce border-[0.02rem]"
-                  : gameOver ? "border-red-500 text-red-500 border-[0.02rem]" : "border-green-500 text-green-500 border-[0.02rem]"
+                  : gameOver
+                  ? "border-red-500 text-red-500 border-[0.02rem]"
+                  : "border-green-500 text-green-500 border-[0.02rem]"
               }`}
             >
               {gameLoader ? (
-                <div className={`w-full ${gameOver ? "bg-red-500" : "bg-green-600"} text-white !p-0`}>
+                <div
+                  className={`w-full ${
+                    gameOver ? "bg-red-500" : "bg-green-600"
+                  } text-white !p-0`}
+                >
                   word busters engine starting ✈✈✈
                 </div>
+              ) : winStatus ? (
+                "Start Again"
               ) : (
                 "Start"
               )}
