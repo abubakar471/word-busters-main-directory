@@ -1,6 +1,8 @@
 import { Autocomplete, Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import useWindowSize from "react-use/lib/useWindowSize";
+import Confetti from "react-confetti";
 
 const MainGameForm = () => {
   const [loading, setLoading] = useState(false);
@@ -14,6 +16,7 @@ const MainGameForm = () => {
   const [winStatus, setWinStatus] = useState(false);
   const [gameMessage, setGameMessage] = useState("Guess the word");
   const [gameOver, setGameOver] = useState(false);
+  const { width, height } = useWindowSize();
 
   axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -116,6 +119,7 @@ const MainGameForm = () => {
 
   return (
     <>
+      {winStatus && <Confetti width={width} height={height} />}
       <form
         style={{
           background: "white",
