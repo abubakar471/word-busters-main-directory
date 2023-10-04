@@ -49,7 +49,7 @@ const MainGameForm = () => {
             displayWord: data.new_display_word,
             retryChance: Number(data.retry_chance) || 5,
             winStatus: data.win_status || false,
-            gameOver: data?.game_over?.on || false,
+            gameOver: data?.game_over?.on || false
           })
         );
 
