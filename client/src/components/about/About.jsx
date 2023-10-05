@@ -27,11 +27,6 @@ const About = () => {
               className="w-[250px] h-[250px] rounded-full object-cover"
               alt=""
             />
-            <img
-              src="/images/about5.jpeg"
-              className="w-[250px] h-[250px] rounded-full object-cover"
-              alt=""
-            />
           </div>
         </div>
       </div>
