@@ -4,7 +4,7 @@ import Navbar from "../components/navbar/navbar"
 const Game = () => {
     return (
         <>
-            <Navbar />
+            <Navbar active={2} />
             <div className="w-[90%] md:w-[80] lg:w-[80%] mx-auto py-4">
                 <GamePageHeader />
             </div>

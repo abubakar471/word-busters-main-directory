@@ -126,7 +126,7 @@ const MainGameForm = () => {
           boxShadow: "0 .125px 2px rgba(0,0,0,0.6)",
         }}
         onSubmit={handleSubmit}
-        className="w-[90%] md:w-[50%] h-[400px] mx-auto bg-white rounded-md p-4 flex flex-col"
+        className="w-[90%] md:w-[50%] h-[400px] mx-auto bg-white rounded-md p-4 flex flex-col overflow-hidden"
       >
         <div className="flex-grow">
           {(gameLoader || loading) && (
