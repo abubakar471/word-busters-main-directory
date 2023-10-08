@@ -21,7 +21,7 @@ const HomePageHeader = () => {
             </h3>
           </div>
 
-          <form className="flex flex-col items-center justify-center w-[100%]">
+          <form className="flex flex-col items-center justify-center">
             <input
               type="text"
               className="p-4 my-2 w-[350px] md:w-[500px] lg:w-[500px] xl:w-[500px] focus:outline-pink-500 focus:border-pink-500"
